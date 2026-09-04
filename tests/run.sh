@@ -48,9 +48,17 @@ echo "== 2. add / use =="
 OUT=$($GLUE add lookup rbtree 2>&1)
 assert_contains "add 登记候选" "rbtree" "$OUT"
 # 冷启动环境手工造出第二个候选：把区域体改成 bplus 版再登记
-#（sed 写法兼容 GNU 与 BSD/macOS：-i.bak + $'...' 真实换行）
-NEW_BLOCK=$'        int found = Collections.binarySearch(bpKeys, key);\n        return (found < 0) ? null : bpVals.get(found);'
-sed -i.bak "s|        return rbtree.get(key);|${NEW_BLOCK}|" examples/demo/IndexStore.java && rm -f examples/demo/IndexStore.java.bak
+#（多行替换用 python，sed 的换行语义在 GNU/BSD 间不兼容）
+PY="$(command -v python3 || command -v python)"
+"$PY" -c "
+import io
+p = 'examples/demo/IndexStore.java'
+s = io.open(p, encoding='utf-8').read()
+old = '        return rbtree.get(key);'
+new = '        int found = Collections.binarySearch(bpKeys, key);\n        return (found < 0) ? null : bpVals.get(found);'
+assert old in s, 'target line not found'
+io.open(p, 'w', encoding='utf-8', newline='\n').write(s.replace(old, new, 1))
+"
 OUT=$($GLUE add lookup bplus 2>&1)
 assert_contains "add 登记第二候选" "bplus" "$OUT"
 OUT=$($GLUE use lookup rbtree 2>&1)   # 先切回 rbtree 再测 bplus 切换
