@@ -1,0 +1,15 @@
+# 构建产物
+build/
+out/
+*.class
+
+# .NET 构建产物
+bin/
+obj/
+
+# 工作区内部（AI 助手记忆等，不属于项目）
+.workbuddy/
+
+# 系统文件
+.DS_Store
+Thumbs.db

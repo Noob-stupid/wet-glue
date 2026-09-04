@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# 胶水 glue —— 一键运行入口
+set -euo pipefail
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Git Bash / MSYS 下把 POSIX 路径转成 Windows 路径，否则 java -cp 找不到类
+if command -v cygpath >/dev/null 2>&1; then
+    ROOT="$(cygpath -w "$ROOT")"
+fi
+
+if [ ! -f "$ROOT/build/Glue.class" ]; then
+    echo "首次运行，正在编译..."
+    javac -encoding UTF-8 -d "$ROOT/build" "$ROOT/src/Glue.java"
+fi
+
+exec java -Dfile.encoding=UTF-8 -cp "$ROOT/build" Glue "$@"

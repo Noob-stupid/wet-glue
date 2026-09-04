@@ -1,0 +1,46 @@
+2026-09-04T03:21:29.4826967  lookup  create  status=experimental selected=current
+2026-09-04T03:21:30.2462647  lookup  add  candidate=rbtree status=experimental
+2026-09-04T03:22:06.8424416  lookup  add  candidate=bplus status=candidate
+2026-09-04T03:22:09.5386426  lookup  use  from=bplus to=rbtree
+2026-09-04T03:22:30.1187031  lookup  seal  selected=rbtree candidates=rbtree|bplus
+2026-09-04T03:22:55.784746  lookup  unseal  restored=rbtree
+2026-09-04T03:25:34.9076669  lookup  seal  selected=rbtree candidates=rbtree|bplus
+2026-09-04T03:25:35.7675873  lookup  unseal  restored=rbtree
+2026-09-04T03:30:49.9702678  lookup  use  from=rbtree to=bplus
+2026-09-04T03:31:09.6158712  lookup  use  from=bplus to=rbtree
+2026-09-04T03:31:28.1859376  lookup  seal  selected=rbtree candidates=rbtree|bplus
+2026-09-04T03:31:51.3401348  lookup  unseal  restored=rbtree
+2026-09-04T03:32:03.4937129  lookup  seal  selected=rbtree candidates=rbtree|bplus
+2026-09-04T03:32:57.4757663  lookup  unseal  restored=rbtree
+2026-09-04T03:33:55.593321  leakcase  create  status=experimental selected=current
+2026-09-04T03:36:57.2123416  lookup  verify  register cmd=javac -encoding UTF-8 -d out examples/demo/IndexStore.java && java -Dfile.encoding=UTF-8 -cp out IndexStore
+2026-09-04T03:37:03.2441866  lookup  use  from=rbtree to=bplus
+2026-09-04T03:37:14.2867074  lookup  use  from=bplus to=rbtree
+2026-09-04T03:37:17.261472  lookup  verify  register cmd=exit 3
+2026-09-04T03:37:33.6081786  lookup  verify  register cmd=javac -encoding UTF-8 -d out examples/demo/IndexStore.java && java -Dfile.encoding=UTF-8 -cp out IndexStore
+2026-09-04T03:39:03.8432672  cs_lookup  create  status=experimental selected=current
+2026-09-04T03:39:13.3118778  cs_lookup  add  candidate=rbtree status=experimental
+2026-09-04T03:39:55.8446738  cs_lookup  use  from=rbtree to=bplus
+2026-09-04T03:40:18.6552482  cs_lookup  use  from=bplus to=rbtree
+2026-09-04T03:40:49.0170747  cs_lookup  verify  register cmd=cd examples/csharp && dotnet run -c Release
+2026-09-04T03:42:10.5313198  lookup  seal  selected=rbtree candidates=rbtree|bplus
+2026-09-04T03:42:13.0218246  lookup  unseal  restored=rbtree
+2026-09-04T04:42:45.2304392  lookup  use  from=rbtree to=bplus
+2026-09-04T04:42:47.7226277  lookup  use  from=bplus to=rbtree
+2026-09-04T04:42:57.1098891  lookup  seal  selected=rbtree candidates=rbtree|bplus
+2026-09-04T04:43:11.065207  lookup  unseal  restored=rbtree
+2026-09-04T04:43:37.5332256  lookup  verify  register cmd=exit 3
+2026-09-04T04:43:42.7474497  lookup  verify  register cmd=javac -encoding UTF-8 -d out examples/demo/IndexStore.java && java -Dfile.encoding=UTF-8 -cp out IndexStore
+2026-09-04T04:44:04.3351213  leakcase  create  status=experimental selected=current
+2026-09-04T04:44:34.0661623  cs_lookup  seal  selected=rbtree candidates=rbtree|bplus
+2026-09-04T04:44:45.8215536  cs_lookup  unseal  restored=rbtree
+2026-09-04T04:47:59.3520042  lookup  use  from=rbtree to=bplus
+2026-09-04T04:48:06.0711631  lookup  use  from=bplus to=rbtree
+2026-09-04T04:48:10.2660007  lookup  seal  selected=rbtree candidates=rbtree|bplus
+2026-09-04T04:48:17.2885993  lookup  unseal  restored=rbtree
+2026-09-04T04:48:19.4898259  lookup  verify  register cmd=exit 3
+2026-09-04T04:48:24.6151074  lookup  verify  register cmd=javac -encoding UTF-8 -d out examples/demo/IndexStore.java && java -Dfile.encoding=UTF-8 -cp out IndexStore
+2026-09-04T04:49:17.8376683  cs_lookup  use  from=rbtree to=bplus
+2026-09-04T04:49:20.3953183  cs_lookup  use  from=bplus to=rbtree
+2026-09-04T04:49:32.2749096  cs_lookup  seal  selected=rbtree candidates=rbtree|bplus
+2026-09-04T04:49:41.1424105  cs_lookup  unseal  restored=rbtree
