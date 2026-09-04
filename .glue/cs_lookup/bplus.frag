@@ -1,2 +1,2 @@
-int i = bpKeys.BinarySearch(key);
-return (i >= 0) ? bpVals[i] : null;
+int found = bpKeys.BinarySearch(key);
+return (found >= 0) ? bpVals[found] : null;

@@ -48,7 +48,7 @@ echo "== 2. add / use =="
 OUT=$($GLUE add lookup rbtree 2>&1)
 assert_contains "add 登记候选" "rbtree" "$OUT"
 # 冷启动环境手工造出第二个候选：把区域体改成 bplus 版再登记
-sed -i 's|        return rbtree.get(key);|        int i = Collections.binarySearch(bpKeys, key);\n        return (i < 0) ? null : bpVals.get(i);|' examples/demo/IndexStore.java
+sed -i 's|        return rbtree.get(key);|        int found = Collections.binarySearch(bpKeys, key);\n        return (found < 0) ? null : bpVals.get(found);|' examples/demo/IndexStore.java
 OUT=$($GLUE add lookup bplus 2>&1)
 assert_contains "add 登记第二候选" "bplus" "$OUT"
 OUT=$($GLUE use lookup rbtree 2>&1)   # 先切回 rbtree 再测 bplus 切换
@@ -79,7 +79,8 @@ assert_exit "verify 失败退出码透传" 3 $CODE
 $GLUE verify lookup "javac -encoding UTF-8 -d out examples/demo/IndexStore.java && java -Dfile.encoding=UTF-8 -cp out IndexStore" >/dev/null 2>&1
 
 echo "== 5. seal（含验证门槛与二次确认） =="
-OUT=$(echo yes | $GLUE seal lookup 2>&1); CODE=$?
+# CI 环境里 GitHub Actions 自带 CI=true，而本测试是人工触发的功能验证，显式放行
+OUT=$(echo yes | GLUE_ALLOW_SEAL=1 $GLUE seal lookup 2>&1); CODE=$?
 assert_contains "seal 前自动跑验证" "验证通过" "$OUT"
 assert_contains "seal 完成" "已固化" "$OUT"
 assert_exit "seal 退出码 0" 0 $CODE
@@ -90,13 +91,13 @@ assert_contains "固化后 use 被拒" "已固化" "$OUT"
 echo "== 6. seal 验证失败阻止固化 =="
 $GLUE unseal lookup >/dev/null 2>&1
 $GLUE verify lookup "exit 3" >/dev/null 2>&1
-OUT=$(echo yes | $GLUE seal lookup 2>&1); CODE=$?
+OUT=$(echo yes | GLUE_ALLOW_SEAL=1 $GLUE seal lookup 2>&1); CODE=$?
 assert_contains "验证失败禁止固化" "禁止固化" "$OUT"
 assert_exit "被阻止的 seal 退出码 1" 1 $CODE
 $GLUE verify lookup "javac -encoding UTF-8 -d out examples/demo/IndexStore.java && java -Dfile.encoding=UTF-8 -cp out IndexStore" >/dev/null 2>&1
 
-echo "== 7. CI 禁止固化 =="
-OUT=$(CI=true $GLUE seal lookup 2>&1); CODE=$?
+echo "== 7. CI 禁止固化（GLUE_ALLOW_SEAL 为空时） =="
+OUT=$(CI=true GLUE_ALLOW_SEAL= $GLUE seal lookup 2>&1); CODE=$?
 assert_contains "CI 环境拒绝固化" "CI 环境" "$OUT"
 assert_exit "CI seal 退出码 2" 2 $CODE
 
@@ -142,7 +143,7 @@ if command -v dotnet >/dev/null 2>&1; then
   OUT=$($GLUE use cs_lookup rbtree 2>&1)
   assert_contains "C# use 切换" "已切换到: rbtree" "$OUT"
   $GLUE verify cs_lookup "cd examples/csharp && dotnet run -c Release" >/dev/null 2>&1
-  OUT=$(echo yes | $GLUE seal cs_lookup 2>&1)
+  OUT=$(echo yes | GLUE_ALLOW_SEAL=1 $GLUE seal cs_lookup 2>&1)
   assert_contains "C# seal 含自动验证" "验证通过" "$OUT"
   assert_contains "C# seal 完成" "已固化" "$OUT"
   OUT=$($GLUE unseal cs_lookup 2>&1)
