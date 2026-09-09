@@ -44,3 +44,8 @@
 2026-09-04T04:49:20.3953183  cs_lookup  use  from=bplus to=rbtree
 2026-09-04T04:49:32.2749096  cs_lookup  seal  selected=rbtree candidates=rbtree|bplus
 2026-09-04T04:49:41.1424105  cs_lookup  unseal  restored=rbtree
+2026-09-09T22:19:45.4097073  lookup  add  candidate=rbtree status=candidate  git=4ad277d
+2026-09-09T22:19:46.7067784  lookup  use  from=rbtree to=bplus  git=4ad277d
+2026-09-09T22:19:48.1685151  lookup  verify  register cmd=javac -encoding UTF-8 -d out examples/demo/IndexStore.java && java -Dfile.encoding=UTF-8 -cp out IndexStore  git=4ad277d
+2026-09-09T22:19:50.7861652  lookup  seal  selected=bplus candidates=rbtree|bplus  git=4ad277d
+2026-09-09T22:20:16.1495817  lookup  unseal  restored=bplus  git=4ad277d

@@ -28,7 +28,8 @@ public class IndexStore {
 
     public String get(int key) {
         // glue:begin lookup
-        return rbtree.get(key);
+        int found = Collections.binarySearch(bpKeys, key);
+        return (found < 0) ? null : bpVals.get(found);
         // glue:end
     }
 
